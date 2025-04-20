@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Profil - {{ user.first_name }}
+{% endblock title %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row g-5">
+        <!-- Left Column: Profile Info -->
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 rounded-4 p-4 text-center">
+                <img src="{{ user.profile.picture.url }}" alt="Profil rasmi"
+                    class="rounded-circle mb-3 shadow"
+                    style="width: 140px; height: 140px; object-fit: cover;">
+
+                <h4 class="fw-semibold mb-1">{{ user.get_full_name }}</h4>
+                <p class="text-muted mb-2">{{ user.email }}</p>
+                <p class="small text-secondary">Bio: {{ user.profile.bio }}</p>
+
+                <div class="bg-light rounded-3 p-3 mt-3">
+                    <div class="d-flex justify-content-between text-muted">
+                        <span>Yechilgan testlar</span>
+                        <span class="text-orange fw-bold">{{ number_of_checktests }}</span>
+                    </div>
+                    <hr class="my-2">
+                    <div class="d-flex justify-content-between text-muted">
+                        <span>Yaratilgan testlar</span>
+                        <span class="text-orange fw-bold">{{ number_of_tests }}</span>
+                    </div>
+                </div>
+
+                {% if user == request.user %}
+                <a href="{% url 'update' %}" class="btn btn-outline-warning w-100 mt-3">Profilni Tahrirlash</a>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Right Column: Test Results -->
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0 rounded-4">
+                <div class="card-header bg-white border-bottom-0">
+                    <h5 class="mb-0 fw-semibold">Mening Natijalarim</h5>
+                </div>
+                <div class="card-body">
+                    {% if tests %}
+                    <ul class="list-group list-group-flush">
+                        {% for test in tests %}
+                        <li class="list-group-item px-0">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-1">{{ test.title }}</h6>
+                                    <small class="text-muted">{{ test.category.name }}</small>
+                                </div>
+                            </div>
+                            <ul class="list-group mt-2">
+                                {% for checktest in test.checktests.all %}
+                                <a href="{% url 'check_test' checktest.id %}" class="text-decoration-none">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center
+                                        {% if checktest.is_passed %}bg-light-success{% else %}bg-light-danger{% endif %}">
+                                        <span>Sana: {{ checktest.date }}</span>
+                                        <strong class="text-muted">{{ checktest.percentage }}%</strong>
+                                    </li>
+                                </a>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <p class="text-muted">Test natijalari hali mavjud emas.</p>
+                    {% endif %}
+
+                    <a href="/" class="btn btn-warning mt-4 w-100">Bosh sahifaga qaytish</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
