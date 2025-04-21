@@ -1,48 +1,62 @@
 {% extends "base.html" %}
+
 {% block title %}
-    Test - {{test.title}}
+    Test - {{ test.title }}
 {% endblock title %}
 
 {% block content %}
-    <div class="card mt-3">
-        <div class="card-header">
-            Test - {{test.title}}
+<div class="container my-5">
+    <div class="card shadow-sm border-0 rounded-4">
+        <div class="card-header bg-white border-bottom-0 py-3">
+            <h4 class="fw-bold text-orange mb-0">
+                <i class="bi bi-ui-checks-grid me-2 text-warning"></i> {{ test.title }}
+            </h4>
         </div>
         <div class="card-body">
-            <form  method="post">
+            <form method="post">
                 {% csrf_token %}
                 {% for question in test.questions.all %}
-                <p> {{ forloop.counter }}. {{ question.question }} </p>
-                
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="{{ question.id }}" value="a" id="{{ question.id }}_a">
-                    <label class="form-check-label" for="{{ question.id }}_a">
-                        {{ question.answer_a }}
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="{{ question.id }}" value="b" id="{{ question.id }}_b">
-                    <label class="form-check-label" for="{{ question.id }}_b">
-                        {{ question.answer_b }}
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="{{ question.id }}" value="c" id="{{ question.id }}_c">
-                    <label class="form-check-label" for="{{ question.id }}_c">
-                        {{ question.answer_c }}  <!-- ✅ to‘g‘riga tuzatildi -->
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="{{ question.id }}" value="d" id="{{ question.id }}_d">
-                    <label class="form-check-label" for="{{ question.id }}_d">
-                        {{ question.answer_d }}  <!-- ✅ to‘g‘riga tuzatildi -->
-                    </label>
-                </div>
-                <hr>
+                    <div class="mb-4">
+                        <p class="fw-semibold">{{ forloop.counter }}. {{ question.question }}</p>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="{{ question.id }}" value="a" id="{{ question.id }}_a">
+                            <label class="form-check-label" for="{{ question.id }}_a">
+                                {{ question.answer_a }}
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="{{ question.id }}" value="b" id="{{ question.id }}_b">
+                            <label class="form-check-label" for="{{ question.id }}_b">
+                                {{ question.answer_b }}
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="{{ question.id }}" value="c" id="{{ question.id }}_c">
+                            <label class="form-check-label" for="{{ question.id }}_c">
+                                {{ question.answer_c }}
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="{{ question.id }}" value="d" id="{{ question.id }}_d">
+                            <label class="form-check-label" for="{{ question.id }}_d">
+                                {{ question.answer_d }}
+                            </label>
+                        </div>
+                    </div>
+                    <hr>
                 {% endfor %}
-                
-                <button type="submit" class="btn btn-primary">Tugatish</button>
+
+                <div class="text-end mt-4">
+                    <button type="submit" class="btn btn-warning px-4">
+                        <i class="bi bi-send-check me-1"></i> Tugatish
+                    </button>
+                </div>
             </form>
         </div>
     </div>
+</div>
 {% endblock content %}

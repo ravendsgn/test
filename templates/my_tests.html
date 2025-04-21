@@ -1,29 +1,42 @@
 {% extends "base.html" %}
+
 {% block title %}
    My Tests
 {% endblock title %}
 
 {% block content %}
-    <div class="card mt-5">
-        <div class="card-header">
-            <h3>My Tests</h3>
+<div class="container my-5">
+    <div class="card shadow-sm border-0 rounded-4">
+        <div class="card-header bg-white border-bottom-0">
+            <h4 class="fw-bold text-orange mb-0">
+                <i class="bi bi-list-check me-2 text-warning"></i> My Tests
+            </h4>
         </div>
         <div class="card-body">
             <ol class="list-group list-group-numbered">
                 {% for test in tests %}
-                    <li class="list-group-item d-flex justify-content-between align-items-start">
-                    <div class="ms-2 me-auto">
-                        <div class="fw-bold">{{test.title}}</div>
-                        {{test.category.name}} | 
-                        <a href="{% url 'update_test' test.id %}">Tahrirlash</a>
-                        | <a href="{% url 'create_question' test.id %}">Savol qo'shish</a> |
-                        <a href="{% url 'detail_test' test.id %}"> Ma'lumotlar </a>
-                        | <a href="{% url 'results' test.id %}">Yechganlar</a>
-                    </div>
-                    <span class="badge bg-primary rounded-pill">{{test.questions.all.count}}</span>
+                    <li class="list-group-item d-flex justify-content-between align-items-start p-3">
+                        <div class="ms-2 me-auto">
+                            <div class="fw-bold text-dark">{{ test.title }}</div>
+                            <small class="text-muted">{{ test.category.name }}</small> | 
+                            <a href="{% url 'update_test' test.id %}" class="text-decoration-none text-warning me-2">
+                                <i class="bi bi-pencil-square me-1"></i> Tahrirlash
+                            </a>
+                            | <a href="{% url 'create_question' test.id %}" class="text-decoration-none text-primary me-2">
+                                <i class="bi bi-question-circle me-1"></i> Savol qo'shish
+                            </a> 
+                            | <a href="{% url 'detail_test' test.id %}" class="text-decoration-none text-info me-2">
+                                <i class="bi bi-info-circle me-1"></i> Ma'lumotlar
+                            </a>
+                            | <a href="{% url 'results' test.id %}" class="text-decoration-none text-success">
+                                <i class="bi bi-person-check me-1"></i> Yechganlar
+                            </a>
+                        </div>
+                        <span class="badge bg-primary rounded-pill">{{ test.questions.all.count }}</span>
                     </li>
                 {% endfor %}
-              </ol>
+            </ol>
         </div>
     </div>
+</div>
 {% endblock content %}

@@ -7,75 +7,86 @@
 {% block content %}
 <div class="container my-5">
     <div class="row g-5">
-        <!-- Left Column: Profile Info -->
-        <div class="col-md-4">
-            <div class="card shadow-sm border-0 rounded-4 p-4 text-center">
+        <!-- Profile Overview -->
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-lg rounded-4 p-4 text-center">
                 <img src="{{ user.profile.picture.url }}" alt="Profil rasmi"
-                    class="rounded-circle mb-3 shadow"
-                    style="width: 140px; height: 140px; object-fit: cover;">
+                     class="rounded-circle border shadow mb-3"
+                     style="width: 130px; height: 130px; object-fit: cover;">
 
-                <h4 class="fw-semibold mb-1">{{ user.get_full_name }}</h4>
-                <p class="text-muted mb-2">{{ user.email }}</p>
-                <p class="small text-secondary">Bio: {{ user.profile.bio }}</p>
+                <h4 class="fw-bold mb-0">{{ user.get_full_name }}</h4>
+                <small class="text-muted">{{ user.email }}</small>
 
-                <div class="bg-light rounded-3 p-3 mt-3">
-                    <div class="d-flex justify-content-between text-muted">
-                        <span>Yechilgan testlar</span>
-                        <span class="text-orange fw-bold">{{ number_of_checktests }}</span>
+                <div class="mt-3">
+                    <p class="text-secondary small fst-italic mb-0">Bio:</p>
+                    <p class="text-muted small">{{ user.profile.bio|default:"Bio mavjud emas." }}</p>
+                </div>
+
+                <div class="row g-2 bg-body-tertiary rounded-3 p-3 mt-4 text-center">
+                    <div class="col-6">
+                        <div class="bg-light rounded-3 py-2 shadow-sm">
+                            <div class="text-muted small">Yechilgan</div>
+                            <div class="fw-semibold text-success">{{ number_of_checktests }}</div>
+                        </div>
                     </div>
-                    <hr class="my-2">
-                    <div class="d-flex justify-content-between text-muted">
-                        <span>Yaratilgan testlar</span>
-                        <span class="text-orange fw-bold">{{ number_of_tests }}</span>
+                    <div class="col-6">
+                        <div class="bg-light rounded-3 py-2 shadow-sm">
+                            <div class="text-muted small">Yaratilgan</div>
+                            <div class="fw-semibold text-warning">{{ number_of_tests }}</div>
+                        </div>
                     </div>
                 </div>
 
                 {% if user == request.user %}
-                <a href="{% url 'update' %}" class="btn btn-outline-warning w-100 mt-3">Profilni Tahrirlash</a>
+                <a href="{% url 'update' %}" class="btn btn-outline-warning w-100 mt-4">
+                    <i class="bi bi-pencil-square me-1"></i> Profilni Tahrirlash
+                </a>
                 {% endif %}
             </div>
         </div>
 
-        <!-- Right Column: Test Results -->
-        <div class="col-md-8">
-            <div class="card shadow-sm border-0 rounded-4">
-                <div class="card-header bg-white border-bottom-0">
-                    <h5 class="mb-0 fw-semibold">Mening Natijalarim</h5>
+        <!-- Test Results -->
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-lg rounded-4">
+                <div class="card-header bg-white py-3">
+                    <h5 class="fw-bold mb-0"><i class="bi bi-bar-chart-line me-2"></i> Mening Natijalarim</h5>
                 </div>
                 <div class="card-body">
                     {% if tests %}
-                    <ul class="list-group list-group-flush">
                         {% for test in tests %}
-                        <li class="list-group-item px-0">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h6 class="mb-1">{{ test.title }}</h6>
-                                    <small class="text-muted">{{ test.category.name }}</small>
-                                </div>
-                            </div>
-                            <ul class="list-group mt-2">
+                        <div class="mb-4">
+                            <h6 class="fw-semibold">{{ test.title }}</h6>
+                            <p class="text-muted small mb-2">{{ test.category.name }}</p>
+                            <ul class="list-group list-group-flush">
                                 {% for checktest in test.checktests.all %}
                                 <a href="{% url 'check_test' checktest.id %}" class="text-decoration-none">
-                                    <li class="list-group-item d-flex justify-content-between align-items-center
-                                        {% if checktest.is_passed %}bg-light-success{% else %}bg-light-danger{% endif %}">
-                                        <span>Sana: {{ checktest.date }}</span>
-                                        <strong class="text-muted">{{ checktest.percentage }}%</strong>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center rounded-3 mb-2 px-3
+                                        {% if checktest.is_passed %}
+                                            bg-success bg-opacity-10
+                                        {% else %}
+                                            bg-danger bg-opacity-10
+                                        {% endif %}">
+                                        <span>
+                                            <i class="bi {% if checktest.is_passed %}bi-check-circle-fill text-success{% else %}bi-x-circle-fill text-danger{% endif %} me-2"></i>
+                                            {{ checktest.date }}
+                                        </span>
+                                        <span class="fw-semibold">{{ checktest.percentage }}%</span>
                                     </li>
                                 </a>
                                 {% endfor %}
                             </ul>
-                        </li>
+                        </div>
                         {% endfor %}
-                    </ul>
                     {% else %}
-                    <p class="text-muted">Test natijalari hali mavjud emas.</p>
+                        <p class="text-muted fst-italic">Test natijalari hali mavjud emas.</p>
                     {% endif %}
 
-                    <a href="/" class="btn btn-warning mt-4 w-100">Bosh sahifaga qaytish</a>
+                    <a href="/" class="btn btn-warning mt-4 w-100">
+                        <i class="bi bi-arrow-left-circle me-1"></i> Bosh sahifaga qaytish
+                    </a>
                 </div>
             </div>
         </div>
     </div>
 </div>
 {% endblock content %}
-

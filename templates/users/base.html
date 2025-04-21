@@ -5,17 +5,56 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- Bootstrap CSS (updated to 5.3.0 for latest features) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-ENjdO4Dr2bkBIFxQpeoAaZf5ZjQ3xj1lOn/czXB1BkU1zFyE2bc1zWz70y5Gx2Jf"
+          crossorigin="anonymous">
 
-    <title>{% block title %}{% endblock title %}</title>
+    <title>{% block title %}RAVEN TEST{% endblock title %}</title>
+
+    {% block extra_head %}{% endblock extra_head %}
   </head>
-  <body>
-    <div class="container">
-       {% block content %}
-       {% endblock content %}
+  <body class="bg-light text-dark">
+
+    <!-- Optional: include navbar block -->
+    {% block navbar %}
+    {% endblock navbar %}
+
+    <!-- Main container -->
+    <div class="container py-4">
+      {% block content %}
+      {% endblock content %}
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    <!-- Flash Messages -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1080;">
+      {% for message in messages %}
+        <div class="toast align-items-center text-white bg-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} border-0 show mb-2 shadow" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="d-flex">
+            <div class="toast-body">
+              {{ message }}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Bootstrap Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-QJHtvGhmr9bInh+ZMdD6D9A+gkVsQt1zGzZ1rElKxvKU7l0t6V1U9U+2QknE0zZr"
+            crossorigin="anonymous"></script>
+
+    <!-- Auto-hide Toasts -->
+    <script>
+      document.querySelectorAll('.toast').forEach(toastEl => {
+        setTimeout(() => {
+          const toast = bootstrap.Toast.getOrCreateInstance(toastEl);
+          toast.hide();
+        }, 5000);
+      });
+    </script>
+
+    {% block extra_scripts %}{% endblock extra_scripts %}
   </body>
 </html>
-

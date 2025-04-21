@@ -1,27 +1,19 @@
-{% extends "users/base.html" %}
+{% extends "base.html" %}
 
 {% block title %}
-    Tizimda chiqish
+    Tizimdan Chiqish
 {% endblock title %}
 
 {% block content %}
 <div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
-    <div class="card shadow-lg" style="width: 100%; max-width: 400px;">
-        <div class="card-header bg-dark text-light text-center">
-            <h4>Tizimdan chiqish</h4>
+    <div class="card shadow-lg rounded-4" style="width: 100%; max-width: 400px;">
+        <div class="card-header bg-warning text-dark text-center rounded-top">
+            <h4 class="fw-bold">Tizimdan Chiqish</h4>
         </div>
-        <form method="post"> 
-            {% csrf_token %}
-            <div class="card-body text-center">
-                <p class="mb-4">Siz haqiqatdan ham tizimdan chiqib ketishni xohlaysizmi?</p> 
-                <div class="d-grid gap-2 mb-3">
-                    <button type="submit" class="btn btn-danger btn-lg">Chiqish</button>
-                </div>
-                <div class="d-grid gap-2">
-                    <a href="{% url 'index' %}" class="btn btn-primary btn-lg">Bosh sahifaga qaytish</a>
-                </div>
-            </div>
-        </form>
+        <div class="card-body text-center">
+            <h5>Siz tizimdan muvaffaqiyatli chiqdingiz.</h5>
+            <a href="{% url 'login' %}" class="btn btn-warning btn-lg">Tizimga Kirish</a>
+        </div>
     </div>
 </div>
 {% endblock content %}

@@ -2,24 +2,36 @@
 {% load crispy_forms_tags %}
 
 {% block title %}
-   {{test.title}} - ga savol qo'shish
+    {{ test.title }} - ga savol qo'shish
 {% endblock title %}
 
 {% block content %}
-    <div class="card mt-5">
-        <div class="card-header">
-            <h3>{{test.title}} - ga savol qo'shish</h3>
+<div class="container my-5">
+    <div class="card shadow-sm border-0 rounded-4">
+        <div class="card-header bg-white border-bottom-0">
+            <h4 class="fw-bold text-orange mb-0">
+                <i class="bi bi-plus-circle me-2 text-warning"></i>{{ test.title }} - ga savol qo'shish
+            </h4>
         </div>
         <div class="card-body">
-            <form  method="post">
+            <form method="post" class="needs-validation">
                 {% csrf_token %}
-                {{form|crispy}}
-                <button class="btn btn-primary " type="submit">Submit</button>
-                    <input checked name="add-again" class="form-check-input" type="checkbox"  id="flexCheckDefault">
-                    <label class="form-check-label" for="flexCheckDefault">
-                      Add again
-                    </label>
+                {{ form|crispy }}
+
+                <div class="d-flex justify-content-between align-items-center mt-4">
+                    <button class="btn btn-warning px-4" type="submit">
+                        <i class="bi bi-send-fill me-1"></i> Yuborish
+                    </button>
+
+                    <div class="form-check">
+                        <input checked name="add-again" class="form-check-input" type="checkbox" id="addAgainCheck">
+                        <label class="form-check-label text-muted" for="addAgainCheck">
+                            Yana savol qo‘shish
+                        </label>
+                    </div>
+                </div>
             </form>
         </div>
     </div>
+</div>
 {% endblock content %}

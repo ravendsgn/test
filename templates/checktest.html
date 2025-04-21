@@ -1,47 +1,63 @@
 {% extends "base.html" %}
+
 {% block title %}
-Test: {{checktest.test.title}}
+    Test: {{ checktest.test.title }}
 {% endblock title %}
 
 {% block content %}
-    <div class="card mt-5">
-        <div class="card-header">
-            <h3> Test: {{checktest.test.title}} </h3>
+<div class="container my-5">
+    <div class="card shadow-sm border-0 rounded-4">
+        <div class="card-header bg-white py-3 border-bottom-0">
+            <h4 class="fw-bold text-orange mb-0">
+                <i class="bi bi-check-circle-fill text-warning me-2"></i> Test: {{ checktest.test.title }}
+            </h4>
         </div>
         <div class="card-body">
+
             {% if checktest.is_passed %}
-                <h5> Siz ushbu testni muvaffaqiyatli yechdingiz </h5>
-                <p> Siz testni {{checktest.percentage}} %  ishladingiz. </p>
+                <div class="alert alert-success rounded-3">
+                    <h5 class="fw-semibold">✅ Tabriklaymiz!</h5>
+                    <p>Siz testni <strong>{{ checktest.percentage }}%</strong> bilan muvaffaqiyatli yakunladingiz.</p>
+                </div>
             {% else %}
-                <h5> Siz ushbu testdan o'tolmadingiz: {{checktest.percentage}} % </h5>
-                <p> Testdan o'tish uchun kamida {{checktest.test.pass_percentage}} % ishlashingiz kerak.</p>
+                <div class="alert alert-danger rounded-3">
+                    <h5 class="fw-semibold">❌ Afsus!</h5>
+                    <p>Siz <strong>{{ checktest.percentage }}%</strong> ishladingiz. O'tish uchun kamida <strong>{{ checktest.test.pass_percentage }}%</strong> kerak.</p>
+                </div>
             {% endif %}
 
             <hr>
-            {% for q in checkquestions  %}
-                {% if q.is_true %}
-                <h5> {{forloop.counter}}. {{q.question.question}}</h5>
-                <small><strong>Note: {{q.given_answer}} belgilangan.</strong> </small>
-                <p>A. {{q.question.answer_a}}</p>
-                <p>B. {{q.question.answer_b}}</p>
-                <p>C. {{q.question.answer_c}}</p>
-                <p>D. {{q.question.answer_d}}</p>
-                {% else %}
-                <div class="answer p-2" style="background-color: rgba(255, 41, 41, 0.472); border-radius: 5px;">
-                    <h5> {{forloop.counter}}. {{q.question.question}}</h5>
-                    <small>  </small>
-                    <p>A. {{q.question.answer_a}}</p>
-                    <p>B. {{q.question.answer_b}}</p>
-                    <p>C. {{q.question.answer_c}}</p>
-                    <p>D. {{q.question.answer_d}}</p>
+
+            {% for q in checkquestions %}
+                <div class="mb-4 p-3 rounded-3 
+                    {% if q.is_true %}bg-light border-start border-4 border-success{% else %}bg-light-danger border-start border-4 border-danger{% endif %}">
+                    
+                    <h6 class="fw-bold mb-2">{{ forloop.counter }}. {{ q.question.question }}</h6>
+                    
+                    {% if q.is_true %}
+                        <span class="badge bg-success mb-2">To‘g‘ri javob: {{ q.given_answer|upper }}</span>
+                    {% else %}
+                        <span class="badge bg-danger mb-2">Noto‘g‘ri javob: {{ q.given_answer|upper }}</span>
+                    {% endif %}
+                    
+                    <ul class="list-unstyled mt-2">
+                        <li><strong>A.</strong> {{ q.question.answer_a }}</li>
+                        <li><strong>B.</strong> {{ q.question.answer_b }}</li>
+                        <li><strong>C.</strong> {{ q.question.answer_c }}</li>
+                        <li><strong>D.</strong> {{ q.question.answer_d }}</li>
+                    </ul>
                 </div>
-                {% endif %}
-                <hr>
             {% endfor %}
-        <a href="/" class="btn btn-warning" >Qaytish</a>
-        <a href="{% url 'my_results' %}" class="btn btn-secondary" >Mening Natijalarim</a>
+
+            <div class="d-flex justify-content-end mt-4 gap-2">
+                <a href="/" class="btn btn-warning px-4">
+                    <i class="bi bi-house-door me-1"></i> Bosh sahifa
+                </a>
+                <a href="{% url 'my_results' %}" class="btn btn-outline-secondary px-4">
+                    <i class="bi bi-bar-chart me-1"></i> Mening natijalarim
+                </a>
+            </div>
         </div>
     </div>
-    <br><br>
- 
+</div>
 {% endblock content %}
